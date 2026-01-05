@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kendaraans', function (Blueprint $table) {
+        Schema::create('rentals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->string('title');
-            $table->string('plate_number')->unique();
-            $table->string('brand');
-            $table->string('model');
-            $table->year('year');
-            $table->decimal('rental_price', 10, 2);
-            $table->enum('status', ['available', 'rented'])->default('available');
-            $table->text('description')->nullable();
+            $table->foreignId('vehicle_id')->constrained('kendaraans')->cascadeOnDelete();
+            $table->date('rental_date');
+            $table->date('return_date');
+            $table->decimal('total_price', 10, 2);
+            $table->enum('payment_status', ['unpaid', 'paid'])->default('unpaid');
+            $table->enum('rental_status', ['ongoing', 'returned'])->default('ongoing');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kendaraans');
+        Schema::dropIfExists('rentals');
     }
 };

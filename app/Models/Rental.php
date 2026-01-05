@@ -4,15 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Kendaraan extends Model
+class Rental extends Model
 {
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function rentals()
+    public function kendaraan()
     {
-        return $this->hasMany(Rental::class, 'vehicle_id');
+        return $this->belongsTo(Kendaraan::class, 'vehicle_id');
     }
 }
