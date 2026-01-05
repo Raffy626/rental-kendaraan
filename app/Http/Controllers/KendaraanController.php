@@ -32,7 +32,7 @@ class KendaraanController extends Controller
     {
         $request->validate([
             'title' => 'required',
-            'plate_number' => 'required|unique:kendaraan',
+            'plate_number' => 'required|unique:kendaraans',
             'brand' => 'required',
             'model' => 'required',
             'year' => 'required|numeric',
@@ -81,7 +81,7 @@ class KendaraanController extends Controller
 
         $request->validate([
             'title' => 'required',
-            'plate_number' => 'required|unique:kendaraan,plate_number,' . $kendaraan->id,
+            'plate_number' => 'required|unique:kendaraans,plate_number,' . $kendaraan->id,
             'brand' => 'required',
             'model' => 'required',
             'year' => 'required|numeric',
