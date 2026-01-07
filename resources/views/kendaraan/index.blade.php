@@ -4,13 +4,15 @@
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('Daftar Kendaraan') }}
             </h2>
-            <a href="{{ route('kendaraan.create') }}"
-                class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                </svg>
-                {{ __('Tambah Kendaraan') }}
-            </a>
+            @if (in_array(auth()->user()->role, ['admin', 'petugas']))
+                <a href="{{ route('kendaraan.create') }}"
+                    class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    {{ __('Tambah Kendaraan') }}
+                </a>
+            @endif
         </div>
     </x-slot>
 
@@ -72,17 +74,24 @@
                                         </td>
                                         <td
                                             class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                                            <a href="{{ route('kendaraan.show', $item->id) }}"
-                                                class="text-indigo-600 hover:text-indigo-900">Detail</a>
-                                            <a href="{{ route('kendaraan.edit', $item->id) }}"
-                                                class="text-yellow-600 hover:text-yellow-900">Edit</a>
-                                            <form action="{{ route('kendaraan.destroy', $item->id) }}" method="POST"
-                                                class="inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-red-600 hover:text-red-900"
-                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus kendaraan ini?')">Hapus</button>
-                                            </form>
+                                            @if (in_array(auth()->user()->role, ['admin', 'petugas']))
+                                                <a href="{{ route('kendaraan.show', $item->id) }}"
+                                                    class="text-indigo-600 hover:text-indigo-900">Detail</a>
+                                                <a href="{{ route('kendaraan.edit', $item->id) }}"
+                                                    class="text-yellow-600 hover:text-yellow-900">Edit</a>
+                                                <form action="{{ route('kendaraan.destroy', $item->id) }}"
+                                                    method="POST" class="inline-block">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-red-600 hover:text-red-900"
+                                                        onclick="return confirm('Apakah Anda yakin ingin menghapus kendaraan ini?')">Hapus</button>
+                                                </form>
+                                            @else
+                                                <a href="#"
+                                                    class="inline-flex items-center px-3 py-1 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                                    Sewa
+                                                </a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @empty

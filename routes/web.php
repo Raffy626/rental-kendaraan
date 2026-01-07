@@ -18,7 +18,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-    Route::middleware(['role:admin,prtugas'])->group(function () {
+    Route::middleware(['role:admin,petugas'])->group(function () {
         Route::resource('kendaraan', KendaraanController::class)->except(['index', 'show']);
     });
 
