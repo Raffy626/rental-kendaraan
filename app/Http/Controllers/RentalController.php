@@ -41,4 +41,10 @@ class RentalController extends Controller
 
         return redirect()->back()->with('success', 'Berhasil melakukan rental');
     }
+
+    public function index()
+    {
+        $rentals = Rental::with(['user', 'kendaraan'])->get();
+        return view('rental.index', compact('rentals'));
+    }
 }

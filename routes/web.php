@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KendaraanController;
+use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\RentalController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'role:pelanggan'])->group(function () {
     Route::post('/rental/{kendaraan}', [RentalController::class, 'store'])
         ->name('rental.store');
+});
+
+Route::middleware(['auth', 'role:admin,petugas'])->group(function () {
+    Route::get('/rental', [RentalController::class, 'index'])
+        ->name('rental.index');
+    Route::put('/rental/{rental}/return', [PengembalianController::class, 'return'])
+        ->name('rental.return');
 });
 
 require __DIR__ . '/auth.php';
