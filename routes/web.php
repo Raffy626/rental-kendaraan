@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KendaraanController;
+use App\Http\Controllers\RentalController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,6 +17,10 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
+        if (auth()->user()->role === 'pelanggan') {
+            $kendaraan = App\Models\Kendaraan::where('status', 'available')->get();
+            return view('pelanggan.dashboard', compact('kendaraan'));
+        }
         return view('dashboard');
     })->name('dashboard');
     Route::middleware(['role:admin,petugas'])->group(function () {
@@ -23,6 +28,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::resource('kendaraan', KendaraanController::class)->only(['index', 'show']);
+});
+
+Route::middleware(['auth', 'role:pelanggan'])->group(function () {
+    Route::post('/rental/{kendaraan}', [RentalController::class, 'store'])
+        ->name('rental.store');
 });
 
 require __DIR__ . '/auth.php';
