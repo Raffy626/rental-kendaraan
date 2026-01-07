@@ -14,11 +14,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth','verified'])->group(function(){
-    Route::get('/dashboard',function(){
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-    Route::resource('kendaraan', KendaraanController::class);
+    Route::middleware(['role:admin,prtugas'])->group(function () {
+        Route::resource('kendaraan', KendaraanController::class)->except(['index', 'show']);
+    });
+
+    Route::resource('kendaraan', KendaraanController::class)->only(['index', 'show']);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
